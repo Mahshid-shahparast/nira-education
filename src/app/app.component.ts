@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import {
   cloneDeep,
   each,
+  every,
   filter,
   find,
   includes,
   map,
+  orderBy,
   reject,
   remove,
+  some,
   without,
 } from 'lodash';
 
@@ -153,19 +156,27 @@ export class AppComponent implements OnInit {
     // const searchProductsResult = searchProducts(products, 'm');
     // console.log('searchProductsResult:', searchProductsResult);
     ////////////////////////////////////  find method  ///////////////////////////////////////
-
     // let flowers = [
-    //   { id: 1, name: 'Narcissus', color: 'white' },
-    //   { id: 1, name: 'Sunflower', color: 'yellow' },
+    //   { id: 1, name: 'Narcissus', color: 'white', season: 'winter' },
+    //   { id: 2, name: 'Sunflower', color: 'yellow', season: 'summer' },
+    //   { id: 3, name: 'Rose', color: 'Red', season: 'summer' },
     // ];
+    //ظرز کار
     // const winterFlower = find(flowers, (item) => {
-    //   return item.color === 'white';
+    //   return item.season === 'winter';
     // });
-    // const winterFlower = find(flowers, (item) => {
-    //   return item.color === 'red';
+    // فقظ اولین آیتمی که با شرط برابر باشد را برمگرداند ی
+    // const summerFlowers = find(flowers, (item) => {
+    //   return (item.season === 'summer');
+    // });
+    //اگر شرط برقرار نباشد undefind برمیگرداند
+    // console.log('summerFlowers:', summerFlowers);
+    // const autumnFlower = find(flowers, (item) => {
+    //   return item.season === 'autumn';
     // });
     // const winterFlower = find(flowers, { color: 'white' });
     // console.log('winterFlower:', winterFlower);
+    // console.log('autumnFlower:',autumnFlower)
     /////////////////////////// without method /////////////////////////
     //داده ی اولیه را تغییر نمی دهد
     // let initialArray = [1, 2, 3];
@@ -176,10 +187,9 @@ export class AppComponent implements OnInit {
     //   'lodashWithoutArray:',
     //   lodashWithoutArray
     // );
-
     /////////////////////////// remove method /////////////////////////
-
     // آیتم ها را از آرایه ی اولیه حذف می کند و نتیجه ی آن هم آرایه ای از آبجکت های  حذف شده است
+    // دراصل از آرایه ی اصلی مواردی که درون شرط متود صدق کند  را حذف می کند
     // let initialAbilities = [
     //   { id: 1, name: 'running', isActive: false },
     //   { id: 2, name: 'climbing', isActive: true },
@@ -194,18 +204,131 @@ export class AppComponent implements OnInit {
     //   'lodashRemovedAbilities',
     //   lodashRemovedAbilities
     // );
-    ///////////////////////////// reject method //////////////////////////////
+    // ///////////////////////////// reject method //////////////////////////////
     //داده ی اولیه را تغییر نمی دهد و به عنوان نتیجه آرایه ای می دهد که آیتمی که شرط مورد نظرش را دارد حذف میکند.
     // const lodashRejectedAbilities = reject(initialAbilities, (item) => {
-    //   return !item.isActive;
+    //   return item.id == 1;
     // });
     // console.log(
     //   'initialAbilities',
     //   initialAbilities,
-    //   'lodashRemovedAbilities',
+    //   'lodashRejectedAbilities',
     //   lodashRejectedAbilities
     // );
-    
     // میتوان برای حذف از فیلتر هم با شرط معکوس استفاده کرد ولی  استفاده از ریجکت خوانا تر و کلین تر است.
+    ///////////////////////////////////////////   every method //////////////////////////////////////////////
+    //برای چک  کردن یک شرط بین تمام المان های یک آرایه به کار می رود و خروجی آن از نوع boolean است
+    // const classUserA = [
+    //   {
+    //     id: 1,
+    //     name: 'Hoda',
+    //     isActive: true,
+    //   },
+    //   {
+    //     id: 2,
+    //     name: 'Niloo',
+    //     isActive: true,
+    //   },
+    //   {
+    //     id: 3,
+    //     name: 'Shila',
+    //     isActive: true,
+    //   },
+    // ];
+    // const lodashEveryCheckClassA = every(classUserA, (item) => {
+    //   return item.isActive === true;
+    // });
+
+    // console.log('lodashEveryCheckClassA:', lodashEveryCheckClassA);
+
+    // const classUserB = [
+    //   {
+    //     id: 1,
+    //     name: 'Shahla',
+    //     isActive: true,
+    //   },
+    //   {
+    //     id: 1,
+    //     name: 'Shahla',
+    //     isActive: true,
+    //   },
+    //   {
+    //     id: 2,
+    //     name: 'Shirin',
+    //     isActive: false,
+    //   },
+    //   {
+    //     id: 3,
+    //     name: 'Diba',
+    //     isActive: true,
+    //   },
+    // ];
+    // const lodashEveryCheckClassB = every(classUserB, (item) => {
+    //   return item.isActive === true;
+    // });
+    // const lodashEveryCheckClassB = every(classUserB, { isActive: true });
+    // console.log('lodashEveryCheckClassB:', lodashEveryCheckClassB);
+    ///////////////////  some method/////////////////////////////////////
+    // اگر بخواهیم بین آیتم های یک آرایه چک کنیم که آیا حداقل یک آیتم در شرط مورد نظرمان صدق میکند یا نه . و خروجی آن یک boolean است.
+    // const lodashSomeCheckClassB = some(classUserB, (item) => {
+    //   return item.isActive === true;
+    // });
+    //   const lodashSomeCheckClassB = some(classUserB, {
+    //     isActive: true,
+    //   });
+    //   console.log('lodashSomeCheckClassB:', lodashSomeCheckClassB);
+
+    ////////////////////////////////////// orderBy method /////////////////////////////////////
+    // const users = [
+    //   {
+    //     name: 'Alex',
+    //     likes: 200,
+    //   },
+    //   {
+    //     name: 'John',
+    //     likes: 120,
+    //   },
+    //   {
+    //     name: 'LiLi',
+    //     likes: 210,
+    //   },
+    // ];
+
+    //   const sortedUsers = users.sort((userA, userB) => {
+    //     return userA.likes > userB.likes ? -1 : 1;
+    //   });
+    //   console.log("sortedUsers:", sortedUsers)
+    // }
+
+    // const sortedUsers = users.sort((userA, userB) => {
+    //   return userA.likes < userB.likes ? -1 : 1;
+    // });
+    // console.log("sortedUsers:", sortedUsers)
+    // const lodashOrderBy = orderBy(users, ['like']);
+    // console.log("lodashOrderBy", lodashOrderBy)
+
+    // const lodashOrderBy = orderBy(users, ['like'],['desc']);
+    // console.log("lodashOrderBy", lodashOrderBy)
+
+    const users = [
+      {
+        name: 'Alex',
+        likes: 200,
+      },
+      {
+        name: 'John',
+        likes: 120,
+      },
+      {
+        name: 'Jack',
+        likes: 120,
+      },
+      {
+        name: 'LiLi',
+        likes: 210,
+      },
+    ];
+    const lodashOrderBy = orderBy(users, ['like','name'], ['desc','asc']);
+    console.log('lodashOrderBy', lodashOrderBy);
   }
 }
